@@ -1,0 +1,102 @@
+service: sls-ngr-api-lambda-node-rpa
+frameworkVersion: '4'
+
+plugins:
+  - serverless-offline
+  - serverless-domain-manager
+
+functions:
+  - ${file(./src/health/_functions.yml)}
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-west-2
+  profile: aws-ngr
+  environment: ${self:custom.settings.${self:custom.myStage}}
+  vpc:
+    securityGroupIds:
+      - sg-0f46b6fce678e1d33 
+    subnetIds:
+      - subnet-03fba865cbd934b92
+      - subnet-01602b0c56e724bcd
+      - subnet-04a809ebde67f1bc4
+      - subnet-056d0fe689ba24e86
+      - subnet-0eb928187ac9cc55a
+      - subnet-054f6e4cd193e2c1c
+
+custom:
+  myStage: ${opt:stage, self:provider.stage}
+  serverless-offline:
+    allowCache: true
+    httpPort: 3100
+    lambdaPort: 3102
+  domains:
+    dev: headoffice.dev.api-ngr.com
+    qa: headoffice.qa.api-ngr.com
+    prod: headoffice.api-ngr.com
+  customDomain:
+    basePath: 'rpa'
+    domainName: ${self:custom.domains.${self:custom.myStage}}
+    stage: '${self:custom.myStage}'
+    endpointType: REGIONAL
+  securitygroups:
+    dev:
+      us-east-1: # virginia
+        - sg-0df82d04ab647cec6
+      us-west-2: # oregon
+        - sg-04b31ef8263ab1390
+    qa:
+      us-east-1: # virginia
+        - sg-0df82d04ab647cec6
+      us-west-2: # oregon
+        - sg-04b31ef8263ab1390
+    prod:
+      us-east-1: # virginia
+        - sg-0da542fae4d132418
+      us-west-2: # oregon
+        - sg-031454b437717675e
+  subnets:
+    dev:
+      us-east-1: # virginia
+        - subnet-05fa503797db6ddbd
+        - subnet-04121d97b4403661d
+        - subnet-05706b8dce88e794d
+        - subnet-0992bf8b0653731c2
+      us-west-2: # oregon
+        - subnet-04a809ebde67f1bc4
+        - subnet-056d0fe689ba24e86
+        - subnet-01602b0c56e724bcd
+        - subnet-03fba865cbd934b92
+    qa:
+      us-east-1: # virginia
+        - subnet-05fa503797db6ddbd
+        - subnet-04121d97b4403661d
+        - subnet-05706b8dce88e794d
+        - subnet-0992bf8b0653731c2
+      us-west-2: # oregon
+        - subnet-04a809ebde67f1bc4
+        - subnet-056d0fe689ba24e86
+        - subnet-01602b0c56e724bcd
+        - subnet-03fba865cbd934b92
+    prod:
+      us-east-1: # virginia
+        - subnet-03af16f575ff0a1d8
+        - subnet-03979aafff38480e7
+        - subnet-0ae717cb262822206
+        - subnet-09d5ecd7d1c8269e2
+      us-west-2: # oregon
+        - subnet-0f23c0e6e6c857978
+        - subnet-0dd16d01daf96151a
+        - subnet-0081b5e73dac08f9d
+        - subnet-0fd4409cc2291e1ff
+  settings:
+    dev:
+      ACCOUND_ID: "#{AWS::AccountId}"
+      REGION: ${self:provider.region}
+    qa:
+      ACCOUND_ID: "#{AWS::AccountId}"
+      REGION: ${self:provider.region}
+    prod:
+      ACCOUND_ID: "#{AWS::AccountId}"
+      REGION: ${self:provider.region}

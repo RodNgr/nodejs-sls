@@ -1,0 +1,9 @@
+health-check:
+  handler: src/health/functions/healthCheck.handler
+  description: 'Health check status'
+  role: lambdasRole
+  events:
+    - http:
+        path: health-check
+        method: get
+        authorizer: aws_iam
