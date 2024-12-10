@@ -17,7 +17,6 @@ const Configuration: UserConfig = {
                 'security', 'dependency'
             ]
         ],
-        'subject-case': [RuleConfigSeverity.Error, 'always', 'sentence-case'],
     }
 }
 

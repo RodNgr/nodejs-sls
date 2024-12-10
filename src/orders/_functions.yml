@@ -1,0 +1,10 @@
+list-orders-menu:
+  handler: src/orders/interfaces/functions/list-menu.handler
+  description: 'Lista las ordenes de menu de carta'
+  role: lambdasRole
+  timeout: 900
+  events:
+    - http:
+        path: list-orders-menu
+        method: get
+        authorizer: aws_iam

@@ -7,6 +7,7 @@ plugins:
 
 functions:
   - ${file(./src/health/_functions.yml)}
+  - ${file(./src/orders/_functions.yml)}
 
 provider:
   name: aws
